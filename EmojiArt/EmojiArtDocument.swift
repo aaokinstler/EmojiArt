@@ -20,8 +20,7 @@ class EmojiArtDocument: ObservableObject
     
     init() {
         emojiArt = EmojiArtModel()
-//        emojiArt.addEmoji("😀", at: (-200, -100), size: 80)
-//        emojiArt.addEmoji("😷", at: (50, 100), size: 40)
+        selectedEmojis = Set()
     }
     
     var emojis: [EmojiArtModel.Emoji] { emojiArt.emojis }
@@ -31,6 +30,7 @@ class EmojiArtDocument: ObservableObject
     
     @Published var backgroundImage: UIImage?
     @Published var backgroundImageFetchStatus = BackgroundImageFetchStatus.idle
+    @Published var selectedEmojis: Set<EmojiArtModel.Emoji>
     
     enum BackgroundImageFetchStatus {
         case idle
@@ -82,5 +82,13 @@ class EmojiArtDocument: ObservableObject
         if let index = emojiArt.emojis.index(matching: emoji) {
             emojiArt.emojis[index].size = Int((CGFloat(emojiArt.emojis[index].size) * scale).rounded(.toNearestOrAwayFromZero))
         }
+    }
+    
+    func selectEmoji(_ emoji: EmojiArtModel.Emoji) {
+        selectedEmojis.insert(emoji)
+    }
+    
+    func removeEmoji(_ emoji: EmojiArtModel.Emoji) {
+        emojiArt.removeEmoji(emoji)
     }
 }
